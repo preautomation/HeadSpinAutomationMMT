@@ -1,5 +1,11 @@
 package HeadSpinAutomationMMT;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -8,19 +14,36 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class ConfigureSetup {
 
 	public static WebDriver driver;
+	public static Properties prop;
 
-	  static String liveEnv = "https://www.makemytrip.com/";
-	
-	 public static void setupenvironment()
-	  {
-	    WebDriverManager.chromedriver().setup();
-	    driver = new ChromeDriver();
-	    driver.get(liveEnv);
-	    System.out.println("===== Setup environment done=====");
-	    System.out.println("You are about to hit the url   : " + liveEnv);
-	    driver.manage().window().maximize();
-	  }
+	static String liveEnv = "https://www.makemytrip.com/";
 
-	 
-	 
+	public static void setupenvironment() {
+
+		readConfigFile();
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get(prop.getProperty("URL"));
+		System.out.println("===== Setup environment done=====");
+		System.out.println("You are about to hit the url   : " + prop.getProperty("URL"));
+		driver.manage().timeouts().pageLoadTimeout(1000, TimeUnit.MILLISECONDS);
+		driver.manage().timeouts().implicitlyWait(5000, TimeUnit.MILLISECONDS);
+
+	}
+
+	public static void readConfigFile() {
+
+		try {
+			prop = new Properties();
+			FileInputStream ip = new FileInputStream(
+					"D:\\Learnings\\HeadSpinAutomation\\HeadSpinAutomationMMT\\src\\main\\java\\HeadSpinAutomationMMT\\config.properties");
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+		}
+
+	}
+
 }
