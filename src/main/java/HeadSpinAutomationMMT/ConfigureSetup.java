@@ -22,11 +22,5 @@ public class ConfigureSetup {
 	  }
 
 	 
-	 /**
-	   * DOCUMENT ME!
-	   */
-	  public static void tearDown()
-	  {
-	    driver.quit();
-	  }
+	 
 }
